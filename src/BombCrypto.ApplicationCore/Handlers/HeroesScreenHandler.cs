@@ -10,7 +10,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 {
     public class HeroesScreenHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 20;
+        private const int MaxRetryCount = 10;
         private const int MaxWaitTimeSeconds = 5;
 
         public async override Task HandleAsync(AutomationElement element)
