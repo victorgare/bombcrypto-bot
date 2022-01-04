@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BombCrypto.ApplicationCore\BombCrypto.ApplicationCore.csproj" />
+    <ProjectReference Include="..\BombCrypto.CrossCutting\BombCrypto.CrossCutting.csproj" />
   </ItemGroup>
 </Project>

@@ -14,14 +14,15 @@ namespace BombCrypto.ApplicationCore.Handlers
         public async override Task HandleAsync(AutomationElement element)
         {
             var source = ScreenCapture.CaptureWindow(element);
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "Connect_Wallet.png");
+            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "connect-wallet.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
-            var images = ImageHelper.FindImage(source, template);
+            var rectangle = ImageHelper.SearchBitmap(template, source);
 
-            foreach (var image in images)
+            if (rectangle != Rectangle.Empty)
             {
-                MouseOperations.MouseClick(image.X, image.Y);
+                var centerPoint = rectangle.Center();
+                MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
             }
 
             await base.HandleAsync(element);

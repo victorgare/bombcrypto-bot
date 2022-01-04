@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BombCrypto.ConsoleApplicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BombCrypto.ApplicationCore", "src\BombCrypto.ApplicationCore\BombCrypto.ApplicationCore.csproj", "{9D80B1DD-8B66-41AC-B7A4-7F6A59E4BFA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BombCrypto.CrossCutting", "BombCrypto.CrossCutting\BombCrypto.CrossCutting.csproj", "{11D7E57F-76FB-4290-BAC4-B1F403EEF9CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BombCrypto.CrossCutting", "src\BombCrypto.CrossCutting\BombCrypto.CrossCutting.csproj", "{11D7E57F-76FB-4290-BAC4-B1F403EEF9CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

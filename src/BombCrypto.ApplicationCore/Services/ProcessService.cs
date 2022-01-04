@@ -12,6 +12,8 @@ namespace BombCrypto.ApplicationCore.Services
         public ProcessService()
         {
             _abstractHandler = new ConnectWallerHandler();
+
+            _abstractHandler.SetNext(new AcceptMetaMaskSignInHandler());
         }
 
         public async Task Process(AutomationElement element)

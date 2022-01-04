@@ -40,5 +40,19 @@ namespace BombCrypto.ConsoleApplication.Helpers
         {
             return Process.GetProcesses().Where(IsBrowserWithWindow).ToList();
         }
+
+        public static List<Process> GetByWindowTitle(this List<Process> processes, string searchString)
+        {
+            var responseList = new List<Process>();
+            foreach (var process in processes)
+            {
+                if (process.MainWindowTitle.Contains(searchString))
+                {
+                    responseList.Add(process);
+                }
+            }
+
+            return responseList;
+        }
     }
 }

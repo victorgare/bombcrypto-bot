@@ -5,7 +5,7 @@ using System.Windows.Automation;
 
 namespace BombCrypto.ConsoleApplication.Helpers
 {
-    public class ScreenCapture
+    public static class ScreenCapture
     {
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
@@ -14,7 +14,7 @@ namespace BombCrypto.ConsoleApplication.Helpers
         public static extern IntPtr GetDesktopWindow();
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct Rect
+        public struct Rect
         {
             public int Left;
             public int Top;
@@ -33,6 +33,20 @@ namespace BombCrypto.ConsoleApplication.Helpers
         public static Bitmap CaptureActiveWindow()
         {
             return CaptureWindow(GetForegroundWindow());
+        }
+
+        public static Rect GetWindowRect(IntPtr hWnd)
+        {
+            var rect = new Rect();
+            GetWindowRect(hWnd, ref rect);
+            return rect;
+        }
+
+        public static Rectangle GetWindowBound(IntPtr hWnd)
+        {
+            var rect = new Rect();
+            GetWindowRect(hWnd, ref rect);
+            return new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
         }
 
         public static Bitmap CaptureWindow(IntPtr handle)
