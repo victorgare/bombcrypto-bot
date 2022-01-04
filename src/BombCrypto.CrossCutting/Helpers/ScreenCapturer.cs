@@ -66,9 +66,8 @@ namespace BombCrypto.ConsoleApplication.Helpers
 
         public static Bitmap CaptureWindow(AutomationElement automationElement)
         {
-            //var rect = new Rect();
             var rect = automationElement.Current.BoundingRectangle;
-            //GetWindowRect(handle, ref rect);
+
             var bounds = new Rectangle((int)rect.Left, (int)rect.Top, (int)(rect.Right - rect.Left), (int)(rect.Bottom - rect.Top));
             var result = new Bitmap(bounds.Width, bounds.Height);
 

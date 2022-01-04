@@ -13,7 +13,8 @@ namespace BombCrypto.ApplicationCore.Services
         {
             _abstractHandler = new ConnectWallerHandler();
 
-            _abstractHandler.SetNext(new AcceptMetaMaskSignInHandler());
+            _abstractHandler.SetNext(new AcceptMetaMaskSignInHandler())
+                            .SetNext(new HeroesScreenHandler());
         }
 
         public async Task Process(AutomationElement element)
