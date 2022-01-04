@@ -31,23 +31,26 @@ namespace BombCrypto.ApplicationCore.Handlers
                 var workButtonRectangles = ImageHelper.SearchBitmaps(workButtonTemplate, source);
 
                 // se houver uma imagem, continue procurando, caso contrario, pare
+                continueSearching = greenStaminaRectangles.Any() && workButtonRectangles.Any();
 
-                continueSearching = greenStaminaRectangles.Any();
-
-                foreach (var fullStaminaRectangle in greenStaminaRectangles)
+                if (continueSearching)
                 {
-                    var bottonValue = fullStaminaRectangle.Bottom;
-                    var nearestWorkButtonRectangle = workButtonRectangles.MinBy(x => System.Math.Abs((long)x.Bottom - bottonValue)).First();
-                    var diff = bottonValue - nearestWorkButtonRectangle.Bottom;
-                    if (diff <= 10 && diff >= -10)
+                    foreach (var fullStaminaRectangle in greenStaminaRectangles)
                     {
-                        var centerPoint = nearestWorkButtonRectangle.Center();
-                        MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
+                        var bottonValue = fullStaminaRectangle.Bottom;
+                        var nearestWorkButtonRectangle = workButtonRectangles.MinBy(x => System.Math.Abs((long)x.Bottom - bottonValue)).First();
+                        var diff = bottonValue - nearestWorkButtonRectangle.Bottom;
+                        if (diff <= 10 && diff >= -10)
+                        {
+                            var centerPoint = nearestWorkButtonRectangle.Center();
+                            MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
+                        }
                     }
+
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
-            } while (retryCount <= MaxRetryCount && !continueSearching);
+            } while (retryCount <= MaxRetryCount && continueSearching);
 
             await base.HandleAsync(element);
         }

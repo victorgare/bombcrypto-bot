@@ -15,7 +15,8 @@ namespace BombCrypto.ApplicationCore.Services
 
             _abstractHandler.SetNext(new AcceptMetaMaskSignInHandler())
                             .SetNext(new HeroesScreenHandler())
-                            .SetNext(new GreenStaminaHandler());
+                            .SetNext(new GreenStaminaHandler())
+                            .SetNext(new CloseButtonHandler());
         }
 
         public async Task Process(AutomationElement element)

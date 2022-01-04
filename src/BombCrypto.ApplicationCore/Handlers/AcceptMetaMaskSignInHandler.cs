@@ -47,9 +47,8 @@ namespace BombCrypto.ApplicationCore.Handlers
                 if (!matched)
                 {
                     retryCount++;
+                    await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
-
-                await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
             } while (retryCount <= MaxRetryCount && !matched);
 
             await base.HandleAsync(element);

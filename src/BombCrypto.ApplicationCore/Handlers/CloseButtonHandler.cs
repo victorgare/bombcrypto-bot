@@ -8,14 +8,14 @@ using System.Windows.Automation;
 
 namespace BombCrypto.ApplicationCore.Handlers
 {
-    public class HeroesScreenHandler : AbstractHandler
+    public class CloseButtonHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 10;
+        private const int MaxRetryCount = 2;
         private const int MaxWaitTimeSeconds = 5;
 
         public async override Task HandleAsync(AutomationElement element)
         {
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "hero-icon.png");
+            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "x.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
             var retryCount = 0;
@@ -36,9 +36,9 @@ namespace BombCrypto.ApplicationCore.Handlers
                 if (!matched)
                 {
                     retryCount++;
+
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
-
             } while (retryCount <= MaxRetryCount && !matched);
 
             await base.HandleAsync(element);
