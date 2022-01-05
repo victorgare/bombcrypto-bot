@@ -3,6 +3,7 @@ using BombCrypto.CrossCutting.Helpers;
 using MoreLinq;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                 await ScrollDown(element);
 
                 var source = ScreenCapture.CaptureWindow(element);
+
                 var greenStaminaRectangles = ImageHelper.SearchBitmaps(greenStaminaTemplate, source);
                 var workButtonRectangles = ImageHelper.SearchBitmaps(workButtonTemplate, source);
 
@@ -42,8 +44,6 @@ namespace BombCrypto.ApplicationCore.Handlers
                         {
                             var centerPoint = nearestWorkButtonRectangle.Center();
                             MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
-                            //await Task.Delay(TimeSpan.FromSeconds(1));
-
                         }
                     }
                 }

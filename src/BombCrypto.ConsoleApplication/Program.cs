@@ -36,9 +36,9 @@ namespace BombCrypto.ConsoleApplication
                             tabitem.SetFocus();
 
                             var handler = browser.MainWindowHandle;
-                            ScreenHelper.MoveWindow(handler, 0, 0, 1280, 720, false);
-                            ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1280, 720, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
-                            ScreenHelper.MoveWindow(handler, 10, 10, 1280, 720, false);
+                            ScreenHelper.MoveWindow(handler, 0, 0, 1366, 768, false);
+                            ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1366, 768, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
+                            ScreenHelper.MoveWindow(handler, 10, 10, 1366, 768, false);
 
                             await processService.Process(root);
                         }
