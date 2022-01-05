@@ -10,8 +10,8 @@ namespace BombCrypto.ApplicationCore.Handlers
 {
     public class CloseButtonHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 2;
-        private const int MaxWaitTimeSeconds = 5;
+        private const int MaxRetryCount = 5;
+        private const int MaxWaitTimeSeconds = 2;
 
         public async override Task HandleAsync(AutomationElement element)
         {

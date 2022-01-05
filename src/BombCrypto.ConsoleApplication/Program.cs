@@ -40,13 +40,15 @@ namespace BombCrypto.ConsoleApplication
                             ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1366, 768, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
                             ScreenHelper.MoveWindow(handler, 10, 10, 1366, 768, false);
 
+                            Console.WriteLine($"Iniciando robo - {DateTime.Now}");
                             await processService.Process(root);
+                            Console.WriteLine($"Fim do robo - {DateTime.Now}");
                         }
                     }
                 }
 
-                // aguarde 5 minutos e faca novamente o processo
-                await Task.Delay(TimeSpan.FromMinutes(1));
+                // aguarde 3 minutos e faca novamente o processo
+                await Task.Delay(TimeSpan.FromMinutes(3));
             } while (true);
         }
 

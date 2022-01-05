@@ -11,7 +11,7 @@ namespace BombCrypto.ApplicationCore.Handlers
     public class ConnectWallerHandler : AbstractHandler
     {
         private const int MaxRetryCount = 10;
-        private const int MaxWaitTimeSeconds = 5;
+        private const int MaxWaitTimeSeconds = 2;
         public async override Task HandleAsync(AutomationElement element)
         {
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "connect-wallet.png");

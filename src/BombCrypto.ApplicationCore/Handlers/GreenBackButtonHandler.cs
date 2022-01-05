@@ -10,8 +10,8 @@ namespace BombCrypto.ApplicationCore.Handlers
 {
     public class GreenBackButtonHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 2;
-        private const int MaxWaitTimeSeconds = 5;
+        private const int MaxRetryCount = 5;
+        private const int MaxWaitTimeSeconds = 2;
 
         public async override Task HandleAsync(AutomationElement element)
         {
@@ -39,6 +39,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
+
             } while (retryCount <= MaxRetryCount && !matched);
 
             await base.HandleAsync(element);

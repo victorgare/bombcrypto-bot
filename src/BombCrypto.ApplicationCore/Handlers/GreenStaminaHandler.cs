@@ -3,7 +3,6 @@ using BombCrypto.CrossCutting.Helpers;
 using MoreLinq;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,14 +43,15 @@ namespace BombCrypto.ApplicationCore.Handlers
                         {
                             var centerPoint = nearestWorkButtonRectangle.Center();
                             MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
+
+                            retryCount--;
                         }
                     }
                 }
-                else
-                {
-                    retryCount++;
-                }
 
+                retryCount++;
+
+                Console.WriteLine(retryCount);
                 await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
             } while (retryCount <= MaxRetryCount);
 
