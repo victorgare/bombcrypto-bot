@@ -11,37 +11,43 @@ namespace BombCrypto.ConsoleApplication
     {
         async static Task Main(string[] args)
         {
-            var processService = new ProcessService();
-
-            var browsers = BrowserDetector.GetBrowses();
-            foreach (var browser in browsers)
+            do
             {
-                // the chrome process must have a window 
-                if (browser.MainWindowHandle == IntPtr.Zero)
-                {
-                    continue;
-                }
+                var processService = new ProcessService();
 
-                // to find the tabs we first need to locate something reliable - the 'New Tab' button 
-                AutomationElement root = AutomationElement.FromHandle(browser.MainWindowHandle);
-
-                // loop through all the tabs and get the names which is the page title 
-                Condition condTabItem = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
-                foreach (AutomationElement tabitem in root.FindAll(TreeScope.Descendants, condTabItem))
+                var browsers = BrowserDetector.GetBrowses();
+                foreach (var browser in browsers)
                 {
-                    if (tabitem.Current.Name.Equals("Bombcrypto"))
+                    // the chrome process must have a window 
+                    if (browser.MainWindowHandle == IntPtr.Zero)
                     {
-                        tabitem.SetFocus();
+                        continue;
+                    }
 
-                        var handler = browser.MainWindowHandle;
-                        ScreenHelper.MoveWindow(handler, 0, 0, 1280, 720, false);
-                        ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1280, 720, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
-                        ScreenHelper.MoveWindow(handler, 10, 10, 1280, 720, false);
+                    // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+                    AutomationElement root = AutomationElement.FromHandle(browser.MainWindowHandle);
 
-                        await processService.Process(root);
+                    // loop through all the tabs and get the names which is the page title 
+                    Condition condTabItem = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
+                    foreach (AutomationElement tabitem in root.FindAll(TreeScope.Descendants, condTabItem))
+                    {
+                        if (tabitem.Current.Name.Equals("Bombcrypto"))
+                        {
+                            tabitem.SetFocus();
+
+                            var handler = browser.MainWindowHandle;
+                            ScreenHelper.MoveWindow(handler, 0, 0, 1280, 720, false);
+                            ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1280, 720, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
+                            ScreenHelper.MoveWindow(handler, 10, 10, 1280, 720, false);
+
+                            await processService.Process(root);
+                        }
                     }
                 }
-            }
+
+                // aguarde 5 minutos e faca novamente o processo
+                await Task.Delay(TimeSpan.FromMinutes(1));
+            } while (true);
         }
 
 

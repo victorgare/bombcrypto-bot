@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace BombCrypto.ConsoleApplication.Helpers
 {
@@ -15,7 +16,8 @@ namespace BombCrypto.ConsoleApplication.Helpers
             Move = 0x00000001,
             Absolute = 0x00008000,
             RightDown = 0x00000008,
-            RightUp = 0x00000010
+            RightUp = 0x00000010,
+            Wheel = 0x0800
         }
 
         [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
@@ -41,9 +43,11 @@ namespace BombCrypto.ConsoleApplication.Helpers
 
         public static MousePoint GetCursorPosition()
         {
-            MousePoint currentMousePoint;
-            var gotPoint = GetCursorPos(out currentMousePoint);
-            if (!gotPoint) { currentMousePoint = new MousePoint(0, 0); }
+            var gotPoint = GetCursorPos(out var currentMousePoint);
+            if (!gotPoint)
+            {
+                currentMousePoint = new MousePoint(0, 0);
+            }
             return currentMousePoint;
         }
 
@@ -56,17 +60,25 @@ namespace BombCrypto.ConsoleApplication.Helpers
             mouse_event((int)MouseEventFlags.LeftUp, position.X, position.Y, 0, 0);
         }
 
+        public static void DoubleClick(int x, int y)
+        {
+            MouseClick(x, y);
+            Task.Delay(100).GetAwaiter().GetResult();
+            MouseClick(x, y);
+        }
+
+        public static void Scroll(int x, int y, int scrollAmount = -120)
+        {
+            var sourcePosition = new MousePoint(x, y);
+            SetCursorPosition(sourcePosition);
+            mouse_event((int)MouseEventFlags.Wheel, 0, 0, -120, 0);
+        }
+
         public static void MouseEvent(MouseEventFlags value)
         {
             MousePoint position = GetCursorPosition();
 
-            mouse_event
-                ((int)value,
-                 position.X,
-                 position.Y,
-                 0,
-                 0)
-                ;
+            mouse_event((int)value, position.X, position.Y, 0, 0);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -81,5 +93,6 @@ namespace BombCrypto.ConsoleApplication.Helpers
                 Y = y;
             }
         }
+
     }
 }

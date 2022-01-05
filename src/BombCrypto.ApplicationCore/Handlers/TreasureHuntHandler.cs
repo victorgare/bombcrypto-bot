@@ -8,13 +8,14 @@ using System.Windows.Automation;
 
 namespace BombCrypto.ApplicationCore.Handlers
 {
-    public class ConnectWallerHandler : AbstractHandler
+    public class TreasureHuntHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 10;
+        private const int MaxRetryCount = 2;
         private const int MaxWaitTimeSeconds = 5;
+
         public async override Task HandleAsync(AutomationElement element)
         {
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "connect-wallet.png");
+            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "treasure-hunt-icon.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
             var retryCount = 0;
@@ -27,7 +28,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                 if (rectangle != Rectangle.Empty)
                 {
                     var centerPoint = rectangle.Center();
-                    MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
+                    MouseOperations.DoubleClick(centerPoint.X, centerPoint.Y);
 
                     matched = true;
                 }
@@ -35,9 +36,9 @@ namespace BombCrypto.ApplicationCore.Handlers
                 if (!matched)
                 {
                     retryCount++;
+
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
-
             } while (retryCount <= MaxRetryCount && !matched);
 
             await base.HandleAsync(element);

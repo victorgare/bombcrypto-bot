@@ -13,7 +13,7 @@ namespace BombCrypto.ApplicationCore.Handlers
     public class GreenStaminaHandler : AbstractHandler
     {
         private const int MaxRetryCount = 5;
-        private const int MaxWaitTimeSeconds = 5;
+        private const int MaxWaitTimeSeconds = 2;
 
         public async override Task HandleAsync(AutomationElement element)
         {
@@ -23,36 +23,60 @@ namespace BombCrypto.ApplicationCore.Handlers
             var workButtonTemplate = (Bitmap)Image.FromFile(workButtonPathTemplate);
 
             var retryCount = 0;
-            var continueSearching = false;
             do
             {
+                await ScrollDown(element);
+
                 var source = ScreenCapture.CaptureWindow(element);
                 var greenStaminaRectangles = ImageHelper.SearchBitmaps(greenStaminaTemplate, source);
                 var workButtonRectangles = ImageHelper.SearchBitmaps(workButtonTemplate, source);
 
-                // se houver uma imagem, continue procurando, caso contrario, pare
-                continueSearching = greenStaminaRectangles.Any() && workButtonRectangles.Any();
-
-                if (continueSearching)
+                if (greenStaminaRectangles.Any() && workButtonRectangles.Any())
                 {
-                    foreach (var fullStaminaRectangle in greenStaminaRectangles)
+                    foreach (var greenStaminaRectangle in greenStaminaRectangles)
                     {
-                        var bottonValue = fullStaminaRectangle.Bottom;
+                        var bottonValue = greenStaminaRectangle.Bottom;
                         var nearestWorkButtonRectangle = workButtonRectangles.MinBy(x => System.Math.Abs((long)x.Bottom - bottonValue)).First();
                         var diff = bottonValue - nearestWorkButtonRectangle.Bottom;
                         if (diff <= 10 && diff >= -10)
                         {
                             var centerPoint = nearestWorkButtonRectangle.Center();
                             MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
+                            //await Task.Delay(TimeSpan.FromSeconds(1));
+
                         }
                     }
-
+                }
+                else
+                {
+                    retryCount++;
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
-            } while (retryCount <= MaxRetryCount && continueSearching);
+            } while (retryCount <= MaxRetryCount);
 
             await base.HandleAsync(element);
+        }
+
+        private async Task ScrollDown(AutomationElement element)
+        {
+            var bottonFramePathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "heroes-list-botton-frame.png");
+            var bottonFrameTemplate = (Bitmap)Image.FromFile(bottonFramePathTemplate);
+
+            var source = ScreenCapture.CaptureWindow(element);
+
+            var bottonFrameRectangle = ImageHelper.SearchBitmap(bottonFrameTemplate, source);
+
+            if (bottonFrameRectangle != Rectangle.Empty)
+            {
+
+                var startX = bottonFrameRectangle.Center().X;
+                var startY = bottonFrameRectangle.Top + 20;
+
+                MouseOperations.Scroll(startX, startY, -1200);
+
+                await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
+            }
         }
     }
 }

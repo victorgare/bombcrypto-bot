@@ -34,6 +34,12 @@
     <None Update="Resources\hero-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\heroes-list-botton-frame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\heroes-list-top-frame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\new-map.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
