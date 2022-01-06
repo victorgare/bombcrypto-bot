@@ -15,6 +15,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::OkHandler:: Iniciando - {DateTime.Now}");
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "ok.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
@@ -30,26 +31,21 @@ namespace BombCrypto.ApplicationCore.Handlers
                     var centerPoint = rectangle.Center();
                     MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
                     matched = true;
-
+                    Console.WriteLine($"::OkHandler:: Encontrado - {DateTime.Now}");
                 }
 
                 if (!matched)
                 {
                     retryCount++;
+                    Console.WriteLine($"::OkHandler:: Tentativa {retryCount} - {DateTime.Now}");
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
 
             } while (retryCount <= MaxRetryCount && !matched);
 
+            Console.WriteLine($"::OkHandler:: Chamando proximo handler - {DateTime.Now}");
+            await base.HandleAsync(element);
 
-            if (!matched)
-            {
-                await base.HandleAsync(element);
-            }
-            else
-            {
-                return;
-            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace BombCrypto.ApplicationCore.Handlers
         private const int MaxWaitTimeSeconds = 2;
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::ConnectWallerHandler:: Iniciando - {DateTime.Now}");
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "connect-wallet.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
@@ -30,16 +31,19 @@ namespace BombCrypto.ApplicationCore.Handlers
                     MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
 
                     matched = true;
+                    Console.WriteLine($"::ConnectWallerHandler:: Encontrado - {DateTime.Now}");
                 }
 
                 if (!matched)
                 {
                     retryCount++;
+                    Console.WriteLine($"::ConnectWallerHandler:: Tentativa {retryCount} - {DateTime.Now}");
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
 
             } while (retryCount <= MaxRetryCount && !matched);
 
+            Console.WriteLine($"::ConnectWallerHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
     }

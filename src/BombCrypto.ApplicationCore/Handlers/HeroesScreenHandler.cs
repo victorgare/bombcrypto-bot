@@ -15,6 +15,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::HeroesScreenHandler:: Iniciando - {DateTime.Now}");
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "hero-icon.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
@@ -31,16 +32,19 @@ namespace BombCrypto.ApplicationCore.Handlers
                     MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
 
                     matched = true;
+                    Console.WriteLine($"::HeroesScreenHandler:: Encontrado - {DateTime.Now}");
                 }
 
                 if (!matched)
                 {
                     retryCount++;
+                    Console.WriteLine($"::HeroesScreenHandler:: Tentativa {retryCount} - {DateTime.Now}");
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
 
             } while (retryCount <= MaxRetryCount && !matched);
 
+            Console.WriteLine($"::HeroesScreenHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
     }

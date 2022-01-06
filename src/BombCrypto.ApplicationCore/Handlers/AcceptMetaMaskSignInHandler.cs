@@ -16,6 +16,8 @@ namespace BombCrypto.ApplicationCore.Handlers
 
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Iniciando - {DateTime.Now}");
+
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "select-wallet-2.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
@@ -40,6 +42,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                             MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
 
                             matched = true;
+                            Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Encontrado - {DateTime.Now}");
                         }
                     }
                 }
@@ -47,10 +50,12 @@ namespace BombCrypto.ApplicationCore.Handlers
                 if (!matched)
                 {
                     retryCount++;
+                    Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Tentativa {retryCount} - {DateTime.Now}");
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
             } while (retryCount <= MaxRetryCount && !matched);
 
+            Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
     }

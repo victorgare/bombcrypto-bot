@@ -15,6 +15,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::TreasureHuntHandler:: Iniciando - {DateTime.Now}");
             var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "treasure-hunt-icon.png");
             var template = (Bitmap)Image.FromFile(pathTemplate);
 
@@ -31,16 +32,19 @@ namespace BombCrypto.ApplicationCore.Handlers
                     MouseOperations.DoubleClick(centerPoint.X, centerPoint.Y);
 
                     matched = true;
+
+                    Console.WriteLine($"::TreasureHuntHandler:: Encontrado - {DateTime.Now}");
                 }
 
                 if (!matched)
                 {
                     retryCount++;
-
+                    Console.WriteLine($"::TreasureHuntHandler:: Tentativa {retryCount} - {DateTime.Now}");
                     await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
                 }
             } while (retryCount <= MaxRetryCount && !matched);
 
+            Console.WriteLine($"::TreasureHuntHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
     }

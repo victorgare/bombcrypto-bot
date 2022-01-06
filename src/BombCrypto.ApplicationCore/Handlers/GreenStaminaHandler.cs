@@ -17,6 +17,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 
         public async override Task HandleAsync(AutomationElement element)
         {
+            Console.WriteLine($"::GreenStaminaHandler:: Iniciando - {DateTime.Now}");
             var greenStaminaPathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "green-bar.png");
             var workButtonPathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "go-work.png");
             var greenStaminaTemplate = (Bitmap)Image.FromFile(greenStaminaPathTemplate);
@@ -44,6 +45,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                             var centerPoint = nearestWorkButtonRectangle.Center();
                             MouseOperations.MouseClick(centerPoint.X, centerPoint.Y);
 
+                            Console.WriteLine($"::GreenStaminaHandler:: Encontrado - {DateTime.Now}");
                             retryCount--;
                         }
                     }
@@ -51,10 +53,11 @@ namespace BombCrypto.ApplicationCore.Handlers
 
                 retryCount++;
 
-                Console.WriteLine(retryCount);
+                Console.WriteLine($"::GreenStaminaHandler:: Tentativa {retryCount} - {DateTime.Now}");
                 await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
             } while (retryCount <= MaxRetryCount);
 
+            Console.WriteLine($"::GreenStaminaHandler:: Chamando proxumo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
 
