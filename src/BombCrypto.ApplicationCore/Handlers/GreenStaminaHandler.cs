@@ -57,7 +57,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                 await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
             } while (retryCount <= MaxRetryCount);
 
-            Console.WriteLine($"::GreenStaminaHandler:: Chamando proxumo handler - {DateTime.Now}");
+            Console.WriteLine($"::GreenStaminaHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(element);
         }
 
