@@ -74,7 +74,7 @@ namespace BombCrypto.ApplicationCore.Handlers
             {
 
                 var startX = bottonFrameRectangle.Center().X;
-                var startY = bottonFrameRectangle.Top + 20;
+                var startY = bottonFrameRectangle.Top - 100;
 
                 MouseOperations.Scroll(startX, startY, -1200);
 
