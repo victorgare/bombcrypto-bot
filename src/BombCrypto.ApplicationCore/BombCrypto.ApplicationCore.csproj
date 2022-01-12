@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BombCrypto.CrossCutting\BombCrypto.CrossCutting.csproj" />
     <ProjectReference Include="..\BombCrypto.CrossCutting\BombCrypto.CrossCutting.csproj" />
   </ItemGroup>
 
