@@ -1,9 +1,9 @@
-﻿using BombCrypto.ConsoleApplication.Helpers;
+﻿using BombCrypto.ApplicationCore.Domain;
+using BombCrypto.ConsoleApplication.Helpers;
 using BombCrypto.CrossCutting.Helpers;
 using MoreLinq;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Automation;
@@ -15,7 +15,7 @@ namespace BombCrypto.ApplicationCore.Handlers
         private const int MaxRetryCount = 5;
         private const int MaxWaitTimeSeconds = 2;
 
-        public async override Task HandleAsync(AutomationElement element)
+        public async override Task HandleAsync(Config config)
         {
             Console.WriteLine($"::GreenStaminaHandler:: Iniciando - {DateTime.Now}");
 
@@ -25,9 +25,9 @@ namespace BombCrypto.ApplicationCore.Handlers
             var retryCount = 0;
             do
             {
-                await ScrollDown(element);
+                await ScrollDown(config.Element);
 
-                var source = ScreenCapture.CaptureWindow(element);
+                var source = ScreenCapture.CaptureWindow(config.Element);
 
                 var greenStaminaRectangles = ImageHelper.SearchBitmaps(greenStaminaTemplate, source);
                 var workButtonRectangles = ImageHelper.SearchBitmaps(workButtonTemplate, source);
@@ -57,13 +57,12 @@ namespace BombCrypto.ApplicationCore.Handlers
             } while (retryCount <= MaxRetryCount);
 
             Console.WriteLine($"::GreenStaminaHandler:: Chamando proximo handler - {DateTime.Now}");
-            await base.HandleAsync(element);
+            await base.HandleAsync(config);
         }
 
         private async Task ScrollDown(AutomationElement element)
         {
-            var bottonFramePathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "heroes-list-botton-frame.png");
-            var bottonFrameTemplate = (Bitmap)Image.FromFile(bottonFramePathTemplate);
+            var bottonFrameTemplate = GetTemplate("heroes-list-botton-frame.png");
 
             var source = ScreenCapture.CaptureWindow(element);
 

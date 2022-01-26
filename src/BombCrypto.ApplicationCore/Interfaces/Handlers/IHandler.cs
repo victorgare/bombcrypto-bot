@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using BombCrypto.ApplicationCore.Domain;
+using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Automation;
 
 namespace BombCrypto.ApplicationCore.Interfaces.Handlers
 {
@@ -8,7 +8,7 @@ namespace BombCrypto.ApplicationCore.Interfaces.Handlers
     {
         IHandler SetNext(IHandler handler);
 
-        Task HandleAsync(AutomationElement element);
+        Task HandleAsync(Config config);
 
         Bitmap GetTemplate(string templateName);
     }

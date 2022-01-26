@@ -1,9 +1,9 @@
-﻿using BombCrypto.ConsoleApplication.Helpers;
+﻿using BombCrypto.ApplicationCore.Domain;
+using BombCrypto.ConsoleApplication.Helpers;
 using BombCrypto.CrossCutting.Helpers;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Automation;
 
 namespace BombCrypto.ApplicationCore.Handlers
 {
@@ -11,7 +11,7 @@ namespace BombCrypto.ApplicationCore.Handlers
     {
         private const int MaxRetryCount = 10;
         private const int MaxWaitTimeSeconds = 2;
-        public async override Task HandleAsync(AutomationElement element)
+        public async override Task HandleAsync(Config config)
         {
             Console.WriteLine($"::ConnectWallerHandler:: Iniciando - {DateTime.Now}");
 
@@ -21,7 +21,7 @@ namespace BombCrypto.ApplicationCore.Handlers
             var matched = false;
             do
             {
-                var source = ScreenCapture.CaptureWindow(element);
+                var source = ScreenCapture.CaptureWindow(config.Element);
                 var rectangle = ImageHelper.SearchBitmap(template, source);
 
                 if (rectangle != Rectangle.Empty)
@@ -43,7 +43,7 @@ namespace BombCrypto.ApplicationCore.Handlers
             } while (retryCount <= MaxRetryCount && !matched);
 
             Console.WriteLine($"::ConnectWallerHandler:: Chamando proximo handler - {DateTime.Now}");
-            await base.HandleAsync(element);
+            await base.HandleAsync(config);
         }
     }
 }
