@@ -2,7 +2,6 @@
 using BombCrypto.CrossCutting.Helpers;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Automation;
@@ -18,8 +17,7 @@ namespace BombCrypto.ApplicationCore.Handlers
         {
             Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Iniciando - {DateTime.Now}");
 
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "select-wallet-2.png");
-            var template = (Bitmap)Image.FromFile(pathTemplate);
+            var template = GetTemplate("select-wallet-2.png");
 
             var retryCount = 0;
             var matched = false;

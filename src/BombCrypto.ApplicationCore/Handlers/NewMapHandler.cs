@@ -2,7 +2,6 @@
 using BombCrypto.CrossCutting.Helpers;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
@@ -13,9 +12,8 @@ namespace BombCrypto.ApplicationCore.Handlers
         public async override Task HandleAsync(AutomationElement element)
         {
             Console.WriteLine($"::NewMapHandler:: Iniciando - {DateTime.Now}");
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "new-map.png");
-            var template = (Bitmap)Image.FromFile(pathTemplate);
 
+            var template = GetTemplate("new-map.png");
             var source = ScreenCapture.CaptureWindow(element);
             var rectangle = ImageHelper.SearchBitmap(template, source);
 

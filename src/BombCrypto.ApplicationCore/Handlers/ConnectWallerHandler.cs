@@ -2,7 +2,6 @@
 using BombCrypto.CrossCutting.Helpers;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
@@ -15,8 +14,8 @@ namespace BombCrypto.ApplicationCore.Handlers
         public async override Task HandleAsync(AutomationElement element)
         {
             Console.WriteLine($"::ConnectWallerHandler:: Iniciando - {DateTime.Now}");
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "connect-wallet.png");
-            var template = (Bitmap)Image.FromFile(pathTemplate);
+
+            var template = GetTemplate("connect-wallet.png");
 
             var retryCount = 0;
             var matched = false;

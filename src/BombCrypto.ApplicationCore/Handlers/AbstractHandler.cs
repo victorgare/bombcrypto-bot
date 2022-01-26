@@ -1,4 +1,7 @@
 ﻿using BombCrypto.ApplicationCore.Interfaces.Handlers;
+using System;
+using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
@@ -24,6 +27,20 @@ namespace BombCrypto.ApplicationCore.Handlers
             {
                 await _nextHandler.HandleAsync(element);
             }
+        }
+
+        public Bitmap GetTemplate(string templateName)
+        {
+            var pathTemplate = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", templateName);
+            // var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "ok.png");
+            if (File.Exists(pathTemplate))
+            {
+                return (Bitmap)Image.FromFile(pathTemplate);
+            }
+
+            pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", templateName);
+
+            return (Bitmap)Image.FromFile(pathTemplate);
         }
     }
 

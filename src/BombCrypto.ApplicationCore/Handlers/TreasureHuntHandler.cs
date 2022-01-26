@@ -2,7 +2,6 @@
 using BombCrypto.CrossCutting.Helpers;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
@@ -16,9 +15,8 @@ namespace BombCrypto.ApplicationCore.Handlers
         public async override Task HandleAsync(AutomationElement element)
         {
             Console.WriteLine($"::TreasureHuntHandler:: Iniciando - {DateTime.Now}");
-            var pathTemplate = Path.Combine(Environment.CurrentDirectory, "Resources", "treasure-hunt-icon.png");
-            var template = (Bitmap)Image.FromFile(pathTemplate);
 
+            var template = GetTemplate("treasure - hunt - icon.png");
             var retryCount = 0;
             var matched = false;
             do
