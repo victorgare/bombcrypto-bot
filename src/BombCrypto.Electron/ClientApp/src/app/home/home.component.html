@@ -1,33 +1,37 @@
 <h3>Configuration</h3>
-<form>
+<form #configForm="ngForm">
   <div class="form-group">
-    <label for="formControlRange">Interval time</label>
+    <label for="IntervalMinutes">Interval time</label>
     <input
-    [(ngModel)]="intervalMinutes"
+      [(ngModel)]="configModel.IntervalMinutes"
+      [disabled]="isProcessing"
+      name="IntervalMinutes"
       type="range"
-      class="form-control-range"
-      id="formControlRange"
+      min="1"
+      max="10"
+      class="form-control form-control-range"
+      id="IntervalMinutes"
     />
-    {{ config.intervalMinutes }}
   </div>
-
   <hr />
-  <div class="d-flex justify-content-center">
-    <div class="w-50">
-      <button
-        *ngIf="!isProcessing"
-        class="btn btn-primary btn-block"
-        (click)="startProcessing()"
-      >
-        Start
-      </button>
-      <button
-        *ngIf="isProcessing"
-        class="btn btn-danger btn-block"
-        (click)="stopProcessing()"
-      >
-        Stop
-      </button>
+  <div class="form-group">
+    <div class="d-flex justify-content-center">
+      <div class="w-50">
+        <button
+          *ngIf="!isProcessing"
+          class="btn btn-primary btn-block"
+          (click)="startProcessing()"
+        >
+          Start
+        </button>
+        <button
+          *ngIf="isProcessing"
+          class="btn btn-danger btn-block"
+          (click)="stopProcessing()"
+        >
+          Stop
+        </button>
+      </div>
     </div>
   </div>
 </form>

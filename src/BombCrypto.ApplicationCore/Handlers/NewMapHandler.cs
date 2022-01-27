@@ -12,6 +12,7 @@ namespace BombCrypto.ApplicationCore.Handlers
         public async override Task HandleAsync(Config config)
         {
             Console.WriteLine($"::NewMapHandler:: Iniciando - {DateTime.Now}");
+            config.CancellationTokenSource.Token.ThrowIfCancellationRequested();
 
             var template = GetTemplate("new-map.png");
             var source = ScreenCapture.CaptureWindow(config.Element);

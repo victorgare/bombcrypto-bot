@@ -29,44 +29,53 @@ namespace BombCrypto.ApplicationCore.Services
 
         public async Task Process(Config config)
         {
-            do
+            try
             {
-                var browsers = BrowserDetector.GetBrowses();
-                foreach (var browser in browsers)
+                do
                 {
-                    // the chrome process must have a window 
-                    if (browser.MainWindowHandle == IntPtr.Zero)
+                    var browsers = BrowserDetector.GetBrowses();
+                    foreach (var browser in browsers)
                     {
-                        continue;
-                    }
-
-                    // to find the tabs we first need to locate something reliable - the 'New Tab' button 
-                    AutomationElement root = AutomationElement.FromHandle(browser.MainWindowHandle);
-
-                    // loop through all the tabs and get the names which is the page title 
-                    Condition condTabItem = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
-                    foreach (AutomationElement tabitem in root.FindAll(TreeScope.Descendants, condTabItem))
-                    {
-                        if (tabitem.Current.Name.Equals("Bombcrypto"))
+                        // the chrome process must have a window 
+                        if (browser.MainWindowHandle == IntPtr.Zero)
                         {
-                            tabitem.SetFocus();
+                            continue;
+                        }
 
-                            var handler = browser.MainWindowHandle;
-                            ScreenHelper.MoveWindow(handler, 0, 0, 1366, 768, false);
-                            ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1366, 768, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
-                            ScreenHelper.MoveWindow(handler, 10, 10, 1366, 768, false);
+                        // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+                        AutomationElement root = AutomationElement.FromHandle(browser.MainWindowHandle);
 
-                            Console.WriteLine($"Iniciando robo - {DateTime.Now}");
-                            config.Element = root;
-                            await _abstractHandler.HandleAsync(config);
-                            Console.WriteLine($"Fim do robo - {DateTime.Now}");
+                        // loop through all the tabs and get the names which is the page title 
+                        Condition condTabItem = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
+                        foreach (AutomationElement tabitem in root.FindAll(TreeScope.Descendants, condTabItem))
+                        {
+                            if (tabitem.Current.Name.Equals("Bombcrypto"))
+                            {
+                                tabitem.SetFocus();
+
+                                var handler = browser.MainWindowHandle;
+                                ScreenHelper.MoveWindow(handler, 0, 0, 1366, 768, false);
+                                ScreenHelper.SetWindowPos(handler, IntPtr.Zero, 10, 10, 1366, 768, ScreenHelper.SetWindowPosFlags.SWP_SHOWWINDOW);
+                                ScreenHelper.MoveWindow(handler, 10, 10, 1366, 768, false);
+
+                                Console.WriteLine($"Iniciando robo - {DateTime.Now}");
+                                config.Element = root;
+
+                                await _abstractHandler.HandleAsync(config);
+                                Console.WriteLine($"Fim do robo - {DateTime.Now}");
+                            }
                         }
                     }
-                }
 
-                // aguarde o tempo do config em minutos e faca novamente o processo
-                await Task.Delay(TimeSpan.FromMinutes(config.IntervalMinutes));
-            } while (!CencelationTokenHelper.CancellationTokenSource.IsCancellationRequested);
+                    // aguarde o tempo do config em minutos e faca novamente o processo
+                    Console.WriteLine($"Aguardando: {config.IntervalMinutes} minutos");
+                    await Task.Delay(TimeSpan.FromMinutes(config.IntervalMinutes), config.CancellationTokenSource.Token);
+                } while (!config.CancellationTokenSource.IsCancellationRequested);
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("Operacao cancelada");
+            }
 
         }
     }

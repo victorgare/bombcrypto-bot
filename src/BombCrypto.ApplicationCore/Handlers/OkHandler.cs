@@ -22,6 +22,8 @@ namespace BombCrypto.ApplicationCore.Handlers
             var matched = false;
             do
             {
+                config.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                 var source = ScreenCapture.CaptureWindow(config.Element);
                 var rectangle = ImageHelper.SearchBitmap(template, source);
 
@@ -37,14 +39,13 @@ namespace BombCrypto.ApplicationCore.Handlers
                 {
                     retryCount++;
                     Console.WriteLine($"::OkHandler:: Tentativa {retryCount} - {DateTime.Now}");
-                    await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
+                    await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds), config.CancellationTokenSource.Token);
                 }
 
             } while (retryCount <= MaxRetryCount && !matched);
 
             Console.WriteLine($"::OkHandler:: Chamando proximo handler - {DateTime.Now}");
             await base.HandleAsync(config);
-
         }
     }
 }

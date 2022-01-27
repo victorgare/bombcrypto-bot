@@ -13,6 +13,7 @@ namespace BombCrypto.CrossCutting.Helpers
                 if (_cancellationTokenSource == null || _cancellationTokenSource.IsCancellationRequested)
                 {
                     _cancellationTokenSource = new CancellationTokenSource();
+                    _cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 }
 
                 return _cancellationTokenSource;

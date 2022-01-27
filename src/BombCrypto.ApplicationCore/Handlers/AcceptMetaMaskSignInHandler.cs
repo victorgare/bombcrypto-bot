@@ -23,6 +23,8 @@ namespace BombCrypto.ApplicationCore.Handlers
             var matched = false;
             do
             {
+                config.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                 var metaMaskScreens = BrowserDetector.GetBrowses().GetByWindowTitle("MetaMask").ToList();
 
                 foreach (var metaMaskScreen in metaMaskScreens)
@@ -49,7 +51,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                 {
                     retryCount++;
                     Console.WriteLine($"::AcceptMetaMaskSignInHandler:: Tentativa {retryCount} - {DateTime.Now}");
-                    await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
+                    await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds), config.CancellationTokenSource.Token);
                 }
             } while (retryCount <= MaxRetryCount && !matched);
 

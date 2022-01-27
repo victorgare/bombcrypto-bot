@@ -1,5 +1,7 @@
 using BombCrypto.ApplicationCore.Interfaces.Services;
 using BombCrypto.ApplicationCore.Services;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -76,8 +78,27 @@ namespace BombCrypto.Electron
                 }
             });
 
-            // Open the Electron-Window here
-            Task.Run(async () => await ElectronNET.API.Electron.WindowManager.CreateWindowAsync());
+            if (HybridSupport.IsElectronActive)
+            {
+                Task.Run(() => ElectronStatup());
+            }
+        }
+
+        private async void ElectronStatup()
+        {
+            var window = await ElectronNET.API.Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                Width = 540,
+                Height = 540,
+                Show = false
+            });
+
+            window.OnReadyToShow += () => window.Show();
+
+            window.OnClosed += () =>
+            {
+                ElectronNET.API.Electron.App.Quit();
+            };
         }
     }
 }

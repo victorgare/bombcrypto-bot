@@ -25,6 +25,7 @@ namespace BombCrypto.ApplicationCore.Handlers
         {
             if (_nextHandler != null)
             {
+                config.CancellationTokenSource.Token.ThrowIfCancellationRequested();
                 await _nextHandler.HandleAsync(config);
             }
         }

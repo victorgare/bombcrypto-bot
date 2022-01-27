@@ -25,6 +25,8 @@ namespace BombCrypto.ApplicationCore.Handlers
             var retryCount = 0;
             do
             {
+                config.CancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                 await ScrollDown(config.Element);
 
                 var source = ScreenCapture.CaptureWindow(config.Element);
@@ -53,7 +55,7 @@ namespace BombCrypto.ApplicationCore.Handlers
                 retryCount++;
 
                 Console.WriteLine($"::GreenStaminaHandler:: Tentativa {retryCount} - {DateTime.Now}");
-                await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds));
+                await Task.Delay(TimeSpan.FromSeconds(MaxWaitTimeSeconds), config.CancellationTokenSource.Token);
             } while (retryCount <= MaxRetryCount);
 
             Console.WriteLine($"::GreenStaminaHandler:: Chamando proximo handler - {DateTime.Now}");
