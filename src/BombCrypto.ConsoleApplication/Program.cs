@@ -1,6 +1,4 @@
-﻿using BombCrypto.ApplicationCore.Domain;
-using BombCrypto.ApplicationCore.Services;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BombCrypto.ConsoleApplication
 {
@@ -8,9 +6,9 @@ namespace BombCrypto.ConsoleApplication
     {
         async static Task Main()
         {
-            var processService = new ProcessService();
-            var config = new Config();
-            await processService.Process(config);
+            //var processService = new ProcessService();
+            //var config = new Config();
+            //await processService.Process(config);
         }
     }
 }

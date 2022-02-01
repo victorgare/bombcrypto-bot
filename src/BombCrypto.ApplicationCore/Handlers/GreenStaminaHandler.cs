@@ -12,7 +12,7 @@ namespace BombCrypto.ApplicationCore.Handlers
 {
     public class GreenStaminaHandler : AbstractHandler
     {
-        private const int MaxRetryCount = 5;
+        private const int MaxRetryCount = 20;
         private const int MaxWaitTimeSeconds = 2;
 
         public async override Task HandleAsync(Config config)

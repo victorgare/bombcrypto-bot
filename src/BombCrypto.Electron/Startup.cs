@@ -1,5 +1,6 @@
 using BombCrypto.ApplicationCore.Interfaces.Services;
 using BombCrypto.ApplicationCore.Services;
+using BombCrypto.Electron.LogsSink;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace BombCrypto.Electron
@@ -16,6 +18,8 @@ namespace BombCrypto.Electron
     {
         public Startup(IConfiguration configuration)
         {
+            // activate logs
+            AddLogs();
             Configuration = configuration;
         }
 
@@ -33,6 +37,7 @@ namespace BombCrypto.Electron
 
 
             services.AddScoped<IProcessService, ProcessService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +104,16 @@ namespace BombCrypto.Electron
             {
                 ElectronNET.API.Electron.App.Quit();
             };
+        }
+
+        private void AddLogs()
+        {
+            var logStream = new LogStream();
+            Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.Sink(logStream)
+            .CreateLogger();
         }
     }
 }
